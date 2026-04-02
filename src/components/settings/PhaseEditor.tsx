@@ -8,7 +8,6 @@ export default function PhaseEditor() {
   const [draft, setDraft] = useState<Phase[]>(state.settings.phases);
   const [saved, setSaved] = useState(false);
 
-  // Sync draft when settings change externally (e.g. import)
   useEffect(() => {
     setDraft(state.settings.phases);
   }, [state.settings.phases]);
@@ -25,11 +24,11 @@ export default function PhaseEditor() {
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-semibold text-gray-700">
+      <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
         Zyklusphasen
       </label>
 
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden px-3">
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden px-3">
         {draft.map((phase, i) => (
           <PhaseRow
             key={phase.name}
@@ -43,9 +42,8 @@ export default function PhaseEditor() {
         ))}
       </div>
 
-      {/* Sum indicator */}
       <div className="flex items-center justify-between px-1">
-        <span className={`text-sm font-medium ${isValid ? 'text-green-600' : 'text-red-500'}`}>
+        <span className={`text-sm font-medium ${isValid ? 'text-green-600 dark:text-green-400' : 'text-red-500'}`}>
           Summe: {sum} / 28 Tage {isValid ? '✓' : '— muss 28 ergeben'}
         </span>
         <button
@@ -55,7 +53,7 @@ export default function PhaseEditor() {
             'px-4 py-1.5 rounded-lg text-sm font-medium transition-colors',
             isValid
               ? 'bg-rose-400 text-white hover:bg-rose-500 active:bg-rose-600'
-              : 'bg-gray-100 text-gray-300 cursor-not-allowed',
+              : 'bg-gray-100 dark:bg-gray-700 text-gray-300 dark:text-gray-500 cursor-not-allowed',
           ].join(' ')}
         >
           {saved ? 'Gespeichert ✓' : 'Speichern'}

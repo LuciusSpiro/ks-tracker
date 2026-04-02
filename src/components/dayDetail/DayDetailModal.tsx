@@ -21,7 +21,6 @@ export default function DayDetailModal({ date, onClose }: DayDetailModalProps) {
   const isToday = date === today();
 
   function handleAddEvent(type: EventType) {
-    // For today: use actual time. For past/future: use noon UTC of that day.
     const timestamp = isToday
       ? new Date().toISOString()
       : `${date}T12:00:00.000Z`;
@@ -38,17 +37,13 @@ export default function DayDetailModal({ date, onClose }: DayDetailModalProps) {
 
   return (
     <>
-      <Modal
-        isOpen={!!date}
-        onClose={onClose}
-        title={formatDateDE(date)}
-      >
+      <Modal isOpen={!!date} onClose={onClose} title={formatDateDE(date)}>
         <div className="p-4 space-y-4">
           <EventList events={dayEvents} />
 
           <button
             onClick={() => setPickerOpen(true)}
-            className="w-full py-3 rounded-xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-rose-300 hover:text-rose-400 text-sm font-medium transition-colors"
+            className="w-full py-3 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-600 text-gray-400 dark:text-gray-500 hover:border-rose-300 dark:hover:border-rose-500 hover:text-rose-400 dark:hover:text-rose-400 text-sm font-medium transition-colors"
           >
             + Ereignis hinzufügen
           </button>

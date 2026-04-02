@@ -8,7 +8,7 @@ interface EventListProps {
 export default function EventList({ events }: EventListProps) {
   if (events.length === 0) {
     return (
-      <p className="text-center text-gray-400 text-sm py-8">
+      <p className="text-center text-gray-400 dark:text-gray-500 text-sm py-8">
         Keine Ereignisse für diesen Tag.
       </p>
     );
@@ -19,7 +19,7 @@ export default function EventList({ events }: EventListProps) {
   );
 
   return (
-    <div className="bg-white rounded-xl overflow-hidden">
+    <div className="bg-white dark:bg-gray-750 rounded-xl overflow-hidden">
       {sorted.map((event) => (
         <EventListItem key={event.id} event={event} />
       ))}
