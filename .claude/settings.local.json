@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Luciu/projects/claude//**)",
+      "Read(//c/Users/Luciu/projects//**)",
+      "Bash(cat /c/Users/Luciu/projects/claude/terminplaner/frontend/src/contexts/*.jsx)",
+      "Bash(npx create-vite@latest . --template react-ts)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}
