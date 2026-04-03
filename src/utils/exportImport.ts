@@ -5,7 +5,7 @@ export function exportJSON(data: AppData): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `alice-tracker-${new Date().toISOString().slice(0, 10)}.json`;
+  a.download = `KS-tracker-${new Date().toISOString().slice(0, 10)}.json`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

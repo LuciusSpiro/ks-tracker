@@ -17,7 +17,7 @@ export default function NavBar() {
     <header className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
       <div className="max-w-sm mx-auto px-4 h-14 flex items-center justify-between">
         <Link to="/calendar" className="text-xl font-bold text-rose-400">
-          Alice Tracker
+          KS Tracker
         </Link>
         <div className="flex items-center gap-2">
           {/* Dark mode toggle */}

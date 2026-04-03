@@ -17,9 +17,12 @@ export function getPhaseForDate(date: string, settings: Settings): Phase | null 
   return null;
 }
 
-/** Returns ISO date string "YYYY-MM-DD" for a given Date object. */
+/** Returns ISO date string "YYYY-MM-DD" for a given Date object (local time). */
 export function toDateString(d: Date): string {
-  return d.toISOString().slice(0, 10);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 /** Returns today's date as "YYYY-MM-DD". */

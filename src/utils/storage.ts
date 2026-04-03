@@ -1,6 +1,6 @@
 import { AppData } from '../types';
 
-const KEY = 'alice-tracker-data';
+const KEY = 'KS-tracker-data';
 
 export function loadFromStorage(): AppData | null {
   try {

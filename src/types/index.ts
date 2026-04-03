@@ -3,12 +3,14 @@ export type EventType =
   | 'dehydration'
   | 'stress'
   | 'eye_strain'
-  | 'painkillers';
+  | 'painkillers'
+  | 'pill_forgotten';
 
 export interface TrackingEvent {
   id: string;
   type: EventType;
   timestamp: string; // ISO 8601
+  note?: string;
 }
 
 export interface Phase {

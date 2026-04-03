@@ -4,6 +4,7 @@ import NavBar from './components/common/NavBar';
 import FloatingAddButton from './components/addEvent/FloatingAddButton';
 import CalendarPage from './pages/CalendarPage';
 import SettingsPage from './pages/SettingsPage';
+import StatsPage from './pages/StatsPage';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
               <Route path="/" element={<Navigate to="/calendar" replace />} />
               <Route path="/calendar" element={<CalendarPage />} />
               <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/stats" element={<StatsPage />} />
             </Routes>
           </main>
           <FloatingAddButton />

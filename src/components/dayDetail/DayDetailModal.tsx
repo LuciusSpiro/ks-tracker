@@ -20,7 +20,7 @@ export default function DayDetailModal({ date, onClose }: DayDetailModalProps) {
   const dayEvents = state.events.filter((e) => e.timestamp.slice(0, 10) === date);
   const isToday = date === today();
 
-  function handleAddEvent(type: EventType) {
+  function handleAddEvent(type: EventType, note?: string) {
     const timestamp = isToday
       ? new Date().toISOString()
       : `${date}T12:00:00.000Z`;
@@ -31,6 +31,7 @@ export default function DayDetailModal({ date, onClose }: DayDetailModalProps) {
         id: crypto.randomUUID(),
         type,
         timestamp,
+        note,
       },
     });
   }

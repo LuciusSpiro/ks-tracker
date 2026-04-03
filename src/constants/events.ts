@@ -5,7 +5,8 @@ export const EVENT_DEFINITIONS: { type: EventType; label: string; icon: string }
   { type: 'dehydration', label: 'Zu wenig getrunken',     icon: '💧' },
   { type: 'stress',      label: 'Stress',                 icon: '😤' },
   { type: 'eye_strain',  label: 'Augenüberlastung',       icon: '👁️' },
-  { type: 'painkillers', label: 'Schmerzmittel genommen', icon: '💊' },
+  { type: 'painkillers',   label: 'Schmerzmittel genommen', icon: '💊' },
+  { type: 'pill_forgotten', label: 'Pille vergessen',       icon: '🩷' },
 ];
 
 export const DEFAULT_PHASES: Phase[] = [
