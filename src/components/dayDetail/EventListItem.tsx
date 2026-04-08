@@ -11,8 +11,8 @@ interface EventListItemProps {
 }
 
 export default function EventListItem({ event }: EventListItemProps) {
-  const { dispatch } = useAppContext();
-  const def = getEventDef(event.type);
+  const { state, dispatch } = useAppContext();
+  const def = getEventDef(event.type, state.settings.eventDefinitions);
   const canDelete = Date.now() - new Date(event.timestamp).getTime() < TWENTY_FOUR_HOURS;
   const [confirming, setConfirming] = useState(false);
 
@@ -45,7 +45,6 @@ export default function EventListItem({ event }: EventListItemProps) {
         )}
       </div>
 
-      {/* Delete confirmation popup */}
       {confirming && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center px-6">
           <div className="absolute inset-0 bg-black/50" onClick={() => setConfirming(false)} />

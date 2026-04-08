@@ -1,5 +1,5 @@
 import { TrackingEvent, Settings } from '../../types';
-import { getMonthDays, getPhaseForDate } from '../../utils/cycleUtils';
+import { getMonthDays, getPhaseForDate, getPillPhaseForDate } from '../../utils/cycleUtils';
 import DayCell from './DayCell';
 
 const WEEKDAY_LABELS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
@@ -39,6 +39,7 @@ export default function CalendarGrid({ year, month, events, settings, onDaySelec
             date={date}
             isCurrentMonth={isCurrentMonth}
             phase={getPhaseForDate(date, settings)}
+            pillPhase={getPillPhaseForDate(date, settings)}
             events={eventsByDate[date] ?? []}
             onClick={() => onDaySelect(date)}
           />

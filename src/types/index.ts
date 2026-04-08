@@ -1,28 +1,32 @@
-export type EventType =
-  | 'headache'
-  | 'dehydration'
-  | 'stress'
-  | 'eye_strain'
-  | 'painkillers'
-  | 'pill_forgotten';
+export type EventType = string;
+
+export interface EventDefinition {
+  type: string;
+  label: string;
+  icon: string;
+  hasNote?: boolean;
+}
 
 export interface TrackingEvent {
   id: string;
-  type: EventType;
+  type: string;
   timestamp: string; // ISO 8601
   note?: string;
 }
 
 export interface Phase {
   name: string;
-  duration: number; // days, all 4 must sum to 28
+  duration: number; // days
   color: string;    // hex "#rrggbb"
 }
 
 export interface Settings {
-  cycleStartDate: string; // "YYYY-MM-DD"
-  phases: Phase[];
+  cycleStartDate: string;   // "YYYY-MM-DD"
+  phases: Phase[];          // 4 cycle phases, sum = 28
+  pillStartDate: string;    // "YYYY-MM-DD"
+  pillPhases: Phase[];      // 2 pill phases, sum = 28
   darkMode: boolean;
+  eventDefinitions: EventDefinition[];
 }
 
 export interface AppData {

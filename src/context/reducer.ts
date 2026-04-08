@@ -1,5 +1,5 @@
 import { AppData, Settings, TrackingEvent } from '../types';
-import { DEFAULT_PHASES } from '../constants/events';
+import { DEFAULT_PHASES, DEFAULT_PILL_PHASES, EVENT_DEFINITIONS } from '../constants/events';
 import { today } from '../utils/cycleUtils';
 
 export type Action =
@@ -11,7 +11,10 @@ export type Action =
 export const DEFAULT_SETTINGS: Settings = {
   cycleStartDate: today(),
   phases: DEFAULT_PHASES,
+  pillStartDate: today(),
+  pillPhases: DEFAULT_PILL_PHASES,
   darkMode: false,
+  eventDefinitions: EVENT_DEFINITIONS,
 };
 
 export const INITIAL_STATE: AppData = {

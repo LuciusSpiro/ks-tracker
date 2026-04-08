@@ -3,7 +3,6 @@ import Modal from '../common/Modal';
 import EventList from './EventList';
 import EventPickerSheet from '../addEvent/EventPickerSheet';
 import { useAppContext } from '../../context/useAppContext';
-import { EventType } from '../../types';
 import { formatDateDE, today } from '../../utils/cycleUtils';
 
 interface DayDetailModalProps {
@@ -20,7 +19,7 @@ export default function DayDetailModal({ date, onClose }: DayDetailModalProps) {
   const dayEvents = state.events.filter((e) => e.timestamp.slice(0, 10) === date);
   const isToday = date === today();
 
-  function handleAddEvent(type: EventType, note?: string) {
+  function handleAddEvent(type: string, note?: string) {
     const timestamp = isToday
       ? new Date().toISOString()
       : `${date}T12:00:00.000Z`;

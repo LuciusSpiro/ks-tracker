@@ -1,23 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Phase } from '../../types';
-import { useAppContext } from '../../context/useAppContext';
 import PhaseRow from './PhaseRow';
 
-export default function PhaseEditor() {
-  const { state, dispatch } = useAppContext();
-  const [draft, setDraft] = useState<Phase[]>(state.settings.phases);
+interface PhaseEditorProps {
+  label: string;
+  phases: Phase[];
+  onSave: (phases: Phase[]) => void;
+}
+
+export default function PhaseEditor({ label, phases, onSave }: PhaseEditorProps) {
+  const [draft, setDraft] = useState<Phase[]>(phases);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    setDraft(state.settings.phases);
-  }, [state.settings.phases]);
+    setDraft(phases);
+  }, [phases]);
 
   const sum = draft.reduce((s, p) => s + p.duration, 0);
   const isValid = sum === 28;
 
   function handleSave() {
     if (!isValid) return;
-    dispatch({ type: 'UPDATE_SETTINGS', payload: { phases: draft } });
+    onSave(draft);
     setSaved(true);
     setTimeout(() => setSaved(false), 1500);
   }
@@ -25,7 +29,7 @@ export default function PhaseEditor() {
   return (
     <div className="space-y-2">
       <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-        Zyklusphasen
+        {label}
       </label>
 
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden px-3">

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Phase } from '../../types';
 
 interface PhaseRowProps {
@@ -6,6 +7,8 @@ interface PhaseRowProps {
 }
 
 export default function PhaseRow({ phase, onChange }: PhaseRowProps) {
+  const [inputValue, setInputValue] = useState(String(phase.duration));
+
   return (
     <div className="flex items-center gap-3 py-3 border-b border-gray-100 dark:border-gray-700 last:border-0">
       <div className="relative shrink-0">
@@ -25,11 +28,18 @@ export default function PhaseRow({ phase, onChange }: PhaseRowProps) {
           type="number"
           min={1}
           max={25}
-          value={phase.duration}
+          value={inputValue}
           onChange={(e) => {
+            setInputValue(e.target.value);
             const val = parseInt(e.target.value, 10);
             if (!isNaN(val) && val >= 1) {
               onChange({ ...phase, duration: val });
+            }
+          }}
+          onBlur={() => {
+            const val = parseInt(inputValue, 10);
+            if (isNaN(val) || val < 1) {
+              setInputValue(String(phase.duration));
             }
           }}
           className="w-12 text-center px-1 py-1 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300"

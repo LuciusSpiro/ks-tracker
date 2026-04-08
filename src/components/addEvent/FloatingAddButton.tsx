@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import EventPickerSheet from './EventPickerSheet';
 import { useAppContext } from '../../context/useAppContext';
-import { EventType } from '../../types';
-
 export default function FloatingAddButton() {
   const [isOpen, setIsOpen] = useState(false);
   const { dispatch } = useAppContext();
@@ -11,7 +9,7 @@ export default function FloatingAddButton() {
 
   if (location.pathname === '/settings') return null;
 
-  function handleSelect(type: EventType, note?: string) {
+  function handleSelect(type: string, note?: string) {
     dispatch({
       type: 'ADD_EVENT',
       payload: {

@@ -1,6 +1,8 @@
 import { useRef } from 'react';
 import CycleStartPicker from '../components/settings/CycleStartPicker';
 import PhaseEditor from '../components/settings/PhaseEditor';
+import PillStartPicker from '../components/settings/PillStartPicker';
+import EventEditor from '../components/settings/EventEditor';
 import { useAppContext } from '../context/useAppContext';
 import { exportJSON, importJSON } from '../utils/exportImport';
 
@@ -10,12 +12,39 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-sm mx-auto px-4 py-6 space-y-8 pb-12">
+
       <section className="space-y-4">
         <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
           Zyklus
         </h3>
         <CycleStartPicker />
-        <PhaseEditor />
+        <PhaseEditor
+          label="Zyklusphasen"
+          phases={state.settings.phases}
+          onSave={(phases) => dispatch({ type: 'UPDATE_SETTINGS', payload: { phases } })}
+        />
+      </section>
+
+      <section className="space-y-4">
+        <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+          Pille
+        </h3>
+        <PillStartPicker />
+        <PhaseEditor
+          label="Pillenphasen"
+          phases={state.settings.pillPhases}
+          onSave={(pillPhases) => dispatch({ type: 'UPDATE_SETTINGS', payload: { pillPhases } })}
+        />
+        <p className="text-xs text-gray-400 dark:text-gray-500 -mt-1">
+          Die Pillenphase wird als untere Hälfte jedes Kalendertags angezeigt.
+        </p>
+      </section>
+
+      <section className="space-y-4">
+        <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+          Ereignisse
+        </h3>
+        <EventEditor />
       </section>
 
       <section className="space-y-4">

@@ -1,6 +1,6 @@
 import { Phase, Settings } from '../types';
 
-/** Returns the phase a given date falls in, or null if before cycleStartDate. */
+/** Returns the cycle phase a given date falls in, or null if before cycleStartDate. */
 export function getPhaseForDate(date: string, settings: Settings): Phase | null {
   const start = new Date(settings.cycleStartDate + 'T00:00:00');
   const target = new Date(date + 'T00:00:00');
@@ -11,6 +11,24 @@ export function getPhaseForDate(date: string, settings: Settings): Phase | null 
   const cycleDay = diffDays % 28;
   let count = 0;
   for (const phase of settings.phases) {
+    count += phase.duration;
+    if (cycleDay < count) return phase;
+  }
+  return null;
+}
+
+/** Returns the pill phase a given date falls in, or null if before pillStartDate. */
+export function getPillPhaseForDate(date: string, settings: Settings): Phase | null {
+  if (!settings.pillStartDate || !settings.pillPhases?.length) return null;
+  const start = new Date(settings.pillStartDate + 'T00:00:00');
+  const target = new Date(date + 'T00:00:00');
+  const diffDays = Math.floor((target.getTime() - start.getTime()) / 86400000);
+
+  if (diffDays < 0) return null;
+
+  const cycleDay = diffDays % 28;
+  let count = 0;
+  for (const phase of settings.pillPhases) {
     count += phase.duration;
     if (cycleDay < count) return phase;
   }

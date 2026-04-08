@@ -1,11 +1,11 @@
-import { EventType, Phase } from '../types';
+import { EventDefinition, Phase } from '../types';
 
-export const EVENT_DEFINITIONS: { type: EventType; label: string; icon: string }[] = [
-  { type: 'headache',    label: 'Kopfschmerzen',          icon: '🤕' },
-  { type: 'dehydration', label: 'Zu wenig getrunken',     icon: '💧' },
-  { type: 'stress',      label: 'Stress',                 icon: '😤' },
-  { type: 'eye_strain',  label: 'Augenüberlastung',       icon: '👁️' },
-  { type: 'painkillers',   label: 'Schmerzmittel genommen', icon: '💊' },
+export const EVENT_DEFINITIONS: EventDefinition[] = [
+  { type: 'headache',      label: 'Kopfschmerzen',          icon: '🤕' },
+  { type: 'dehydration',   label: 'Zu wenig getrunken',     icon: '💧' },
+  { type: 'stress',        label: 'Stress',                 icon: '😤' },
+  { type: 'eye_strain',    label: 'Augenüberlastung',       icon: '👁️' },
+  { type: 'painkillers',   label: 'Schmerzmittel genommen', icon: '💊', hasNote: true },
   { type: 'pill_forgotten', label: 'Pille vergessen',       icon: '🩷' },
 ];
 
@@ -16,6 +16,30 @@ export const DEFAULT_PHASES: Phase[] = [
   { name: 'Lutealphase',   duration: 9, color: '#a78bfa' },
 ];
 
-export function getEventDef(type: EventType) {
-  return EVENT_DEFINITIONS.find((e) => e.type === type)!;
+export const DEFAULT_PILL_PHASES: Phase[] = [
+  { name: 'Einnahme', duration: 21, color: '#34d399' },
+  { name: 'Pause',    duration: 7,  color: '#94a3b8' },
+];
+
+export const ICON_PICKER_OPTIONS: string[] = [
+  // Symptome
+  '🤕', '🤢', '🤧', '🤒', '😷', '🥵', '🥶', '😵', '💫', '😰', '😓', '😫', '😩', '🌀',
+  // Medizin
+  '💊', '💉', '🩺', '🩹', '🩻', '🧬',
+  // Zyklus / Frauen
+  '🩸', '🩷', '❤️', '💛', '💜', '🌸', '🌺', '🌷', '🌼',
+  // Essen & Trinken
+  '💧', '🥤', '🍵', '☕', '🫖', '🍎', '🥗', '🥦',
+  // Fitness & Schlaf
+  '🏃', '🚶', '🧘', '💪', '🛌', '💤',
+  // Stimmung
+  '😊', '😢', '😡', '😟', '😬', '🙂', '😐', '😤', '🥹', '😌',
+  // Wetter / Natur
+  '⚡', '❄️', '🔥', '☁️', '☀️', '🌙', '🌧️',
+  // Sonstiges
+  '⭐', '🎯', '✅', '⚠️', '📝', '🔔', '🎗️', '🧠',
+];
+
+export function getEventDef(type: string, definitions: EventDefinition[]): EventDefinition {
+  return definitions.find((e) => e.type === type) ?? { type, label: type, icon: '❓' };
 }

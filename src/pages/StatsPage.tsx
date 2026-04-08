@@ -1,14 +1,7 @@
 import { useMemo } from 'react';
 import { useAppContext } from '../context/useAppContext';
-import { getPhaseForDate } from '../utils/cycleUtils';
+import { getPhaseForDate, getPillPhaseForDate } from '../utils/cycleUtils';
 
-const TRIGGERS = [
-  { type: 'dehydration', label: 'Zu wenig getrunken', icon: '💧' },
-  { type: 'stress',      label: 'Stress',             icon: '😤' },
-  { type: 'eye_strain',  label: 'Augenüberlastung',   icon: '👁️' },
-  { type: 'painkillers',   label: 'Schmerzmittel',  icon: '💊' },
-  { type: 'pill_forgotten', label: 'Pille vergessen', icon: '🩷' },
-] as const;
 
 interface BarProps {
   percentage: number;
@@ -59,14 +52,16 @@ export default function StatsPage() {
     );
     const headacheTotal = headacheDays.size;
 
-    return TRIGGERS.map(({ type, label, icon }) => {
+    const triggers = settings.eventDefinitions.filter((def) => def.type !== 'headache');
+
+    return triggers.map(({ type, label, icon }) => {
       const triggerDays = new Set(
         events.filter((e) => e.type === type).map((e) => e.timestamp.slice(0, 10))
       );
       const count = [...headacheDays].filter((d) => triggerDays.has(d)).length;
       return { type, label, icon, count, headacheTotal };
     });
-  }, [events]);
+  }, [events, settings.eventDefinitions]);
 
   const headacheTotal = triggerStats[0]?.headacheTotal ?? 0;
 
@@ -88,6 +83,30 @@ export default function StatsPage() {
     const maxCount = Math.max(1, ...Object.values(countByPhase));
 
     return settings.phases.map((phase) => ({
+      phase,
+      count: countByPhase[phase.name] ?? 0,
+      maxCount,
+    }));
+  }, [events, settings]);
+
+  // --- Chart 3: Headaches per Pill Phase ---
+  const pillPhaseStats = useMemo(() => {
+    const countByPhase: Record<string, number> = {};
+    for (const phase of settings.pillPhases) {
+      countByPhase[phase.name] = 0;
+    }
+
+    for (const event of events) {
+      if (event.type !== 'headache') continue;
+      const phase = getPillPhaseForDate(event.timestamp.slice(0, 10), settings);
+      if (phase) {
+        countByPhase[phase.name] = (countByPhase[phase.name] ?? 0) + 1;
+      }
+    }
+
+    const maxCount = Math.max(1, ...Object.values(countByPhase));
+
+    return settings.pillPhases.map((phase) => ({
       phase,
       count: countByPhase[phase.name] ?? 0,
       maxCount,
@@ -144,6 +163,32 @@ export default function StatsPage() {
 
         <div className="space-y-3">
           {phaseStats.map(({ phase, count, maxCount }) => (
+            <Bar
+              key={phase.name}
+              label={phase.name}
+              count={count}
+              percentage={(count / maxCount) * 100}
+              color={phase.color}
+            />
+          ))}
+        </div>
+      </section>
+
+      <div className="border-t border-gray-100 dark:border-gray-700" />
+
+      {/* Chart 3 */}
+      <section className="space-y-4">
+        <div>
+          <h2 className="text-base font-bold text-gray-800 dark:text-gray-100">
+            Kopfschmerzen pro Pillenphase
+          </h2>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">
+            Anzahl Kopfschmerztage je Pillenphase
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {pillPhaseStats.map(({ phase, count, maxCount }) => (
             <Bar
               key={phase.name}
               label={phase.name}
