@@ -6,9 +6,12 @@ interface PhaseEditorProps {
   label: string;
   phases: Phase[];
   onSave: (phases: Phase[]) => void;
+  allowAddDelete?: boolean;
 }
 
-export default function PhaseEditor({ label, phases, onSave }: PhaseEditorProps) {
+const DEFAULT_COLORS = ['#60a5fa', '#f472b6', '#a78bfa', '#34d399', '#fb923c', '#facc15'];
+
+export default function PhaseEditor({ label, phases, onSave, allowAddDelete }: PhaseEditorProps) {
   const [draft, setDraft] = useState<Phase[]>(phases);
   const [saved, setSaved] = useState(false);
 
@@ -17,13 +20,23 @@ export default function PhaseEditor({ label, phases, onSave }: PhaseEditorProps)
   }, [phases]);
 
   const sum = draft.reduce((s, p) => s + p.duration, 0);
-  const isValid = sum === 28;
+  const isValid = sum === 28 && draft.every((p) => p.name.trim() !== '');
 
   function handleSave() {
     if (!isValid) return;
     onSave(draft);
     setSaved(true);
     setTimeout(() => setSaved(false), 1500);
+  }
+
+  function addPhase() {
+    const remaining = Math.max(1, 28 - sum);
+    const color = DEFAULT_COLORS[draft.length % DEFAULT_COLORS.length];
+    setDraft([...draft, { name: '', duration: remaining, color }]);
+  }
+
+  function deletePhase(index: number) {
+    setDraft(draft.filter((_, i) => i !== index));
   }
 
   return (
@@ -35,15 +48,26 @@ export default function PhaseEditor({ label, phases, onSave }: PhaseEditorProps)
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-600 overflow-hidden px-3">
         {draft.map((phase, i) => (
           <PhaseRow
-            key={phase.name}
+            key={i}
             phase={phase}
+            editableName={allowAddDelete}
             onChange={(updated) => {
               const next = [...draft];
               next[i] = updated;
               setDraft(next);
             }}
+            onDelete={allowAddDelete && draft.length > 1 ? () => deletePhase(i) : undefined}
           />
         ))}
+
+        {allowAddDelete && (
+          <button
+            onClick={addPhase}
+            className="w-full py-2.5 flex items-center justify-center gap-1.5 text-sm font-medium text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 transition-colors"
+          >
+            <span className="text-lg leading-none">+</span> Phase hinzufügen
+          </button>
+        )}
       </div>
 
       <div className="flex items-center justify-between px-1">

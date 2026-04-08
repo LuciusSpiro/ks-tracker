@@ -34,6 +34,7 @@ export default function SettingsPage() {
           label="Pillenphasen"
           phases={state.settings.pillPhases}
           onSave={(pillPhases) => dispatch({ type: 'UPDATE_SETTINGS', payload: { pillPhases } })}
+          allowAddDelete
         />
         <p className="text-xs text-gray-400 dark:text-gray-500 -mt-1">
           Die Pillenphase wird als untere Hälfte jedes Kalendertags angezeigt.

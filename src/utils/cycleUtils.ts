@@ -1,14 +1,19 @@
 import { Phase, Settings } from '../types';
 
+/** Returns the number of calendar days between two "YYYY-MM-DD" strings (DST-safe). */
+function calendarDiff(startStr: string, endStr: string): number {
+  const [sy, sm, sd] = startStr.split('-').map(Number);
+  const [ey, em, ed] = endStr.split('-').map(Number);
+  return Math.round((Date.UTC(ey, em - 1, ed) - Date.UTC(sy, sm - 1, sd)) / 86400000);
+}
+
 /** Returns the cycle phase a given date falls in, or null if before cycleStartDate. */
 export function getPhaseForDate(date: string, settings: Settings): Phase | null {
-  const start = new Date(settings.cycleStartDate + 'T00:00:00');
-  const target = new Date(date + 'T00:00:00');
-  const diffDays = Math.floor((target.getTime() - start.getTime()) / 86400000);
-
+  const diffDays = calendarDiff(settings.cycleStartDate, date);
   if (diffDays < 0) return null;
 
-  const cycleDay = diffDays % 28;
+  const cycleLen = settings.phases.reduce((s, p) => s + p.duration, 0) || 28;
+  const cycleDay = diffDays % cycleLen;
   let count = 0;
   for (const phase of settings.phases) {
     count += phase.duration;
@@ -20,13 +25,11 @@ export function getPhaseForDate(date: string, settings: Settings): Phase | null 
 /** Returns the pill phase a given date falls in, or null if before pillStartDate. */
 export function getPillPhaseForDate(date: string, settings: Settings): Phase | null {
   if (!settings.pillStartDate || !settings.pillPhases?.length) return null;
-  const start = new Date(settings.pillStartDate + 'T00:00:00');
-  const target = new Date(date + 'T00:00:00');
-  const diffDays = Math.floor((target.getTime() - start.getTime()) / 86400000);
-
+  const diffDays = calendarDiff(settings.pillStartDate, date);
   if (diffDays < 0) return null;
 
-  const cycleDay = diffDays % 28;
+  const cycleLen = settings.pillPhases.reduce((s, p) => s + p.duration, 0) || 28;
+  const cycleDay = diffDays % cycleLen;
   let count = 0;
   for (const phase of settings.pillPhases) {
     count += phase.duration;
